@@ -1,0 +1,32 @@
+name: Maven Release
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Build and Test
+        uses: qcastel/github-actions-maven-cmd@master
+        with:
+          maven-args: "clean install"
+
+      - name: Perform Release
+        uses: qcastel/github-actions-maven-release@v1.12.37
+        with:
+          git-release-bot-name: "bot-idhub"
+          git-release-bot-email: "bot@idhub.io"
+
+          version-minor: true
+          release-branch-name: "main"
+
+          maven-args: "-Dmaven.javadoc.skip=true -DskipTests -DskipITs -Ddockerfile.skip -DdockerCompose.skip"
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
