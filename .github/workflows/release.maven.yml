@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: Prod
 
     steps:
       - uses: actions/checkout@v1
@@ -27,6 +28,6 @@ jobs:
           release-branch-name: "main"
 
           maven-args: "-Dmaven.javadoc.skip=true -DskipTests -DskipITs -Ddockerfile.skip -DdockerCompose.skip"
-          access-token: ${{ secrets.GITHUB_TOKEN }}
+          access-token: ${{ secrets.ACCESS_TOKEN }}
         env:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
